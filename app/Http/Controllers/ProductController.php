@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\ProductRequest;
 use App\Models\Product;
 use App\Services\Interfaces\IProductService;
 use Illuminate\Http\Request;
@@ -46,15 +47,19 @@ class ProductController extends Controller
      */
     public function create()
     {
-        //
+        return Inertia::render('Products/Create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(Request $request)
+    public function store(ProductRequest $request)
     {
-        //
+        $this->iProductService->insert($request->validated());
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Produto criado com sucesso.');
     }
 
     /**
@@ -70,15 +75,21 @@ class ProductController extends Controller
      */
     public function edit(Product $product)
     {
-        //
+        return Inertia::render('Products/Edit', [
+            'product' => $product,
+        ]);
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Product $product)
+    public function update(ProductRequest $request, Product $product)
     {
-        //
+        $this->iProductService->edit($product->id, $request->validated());
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Produto atualizado com sucesso.');
     }
 
     /**
@@ -86,6 +97,10 @@ class ProductController extends Controller
      */
     public function destroy(Product $product)
     {
-        //
+        $this->iProductService->delete($product->id);
+
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Produto excluído com sucesso.');
     }
 }
