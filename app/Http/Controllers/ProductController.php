@@ -3,16 +3,42 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\Interfaces\IProductService;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class ProductController extends Controller
 {
+
+    public function __construct
+    (
+        protected IProductService $iProductService,
+    ) 
+    {
+    }
+
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        
+        $perPage = (int) $request->input('per_page', 15);
+        $perPage = max(5, min(100, $perPage));
+
+        $filters = [
+            'customer_name:like' => $request->input('customer'),
+        ];
+
+        $products = $this->iProductService->listRecords($filters, $perPage)
+            ->appends($request->query());
+
+        return Inertia::render('Products/index', [
+            'products' => $products,
+            'filters' => [
+                'customer' => $request->input('customer'),
+                'per_page' => $perPage,
+            ],
+        ]);
     }
 
     /**

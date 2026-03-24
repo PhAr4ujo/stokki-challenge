@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\Errors\ModelNotDefined;
 use App\Repositories\Interfaces\IRepository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class Repository implements IRepository
@@ -40,14 +41,20 @@ abstract class Repository implements IRepository
         }
     }
 
-    public function listRecords(array $filters, $paginationAmount)
+    public function listRecords(array $filters, $paginationAmount): LengthAwarePaginator
     {
         $query = $this->model->query();
 
-        foreach ($filters as $name => $value) {
-            if ($value != null && $name != 'qtd_paginacao') {
-                $query = $query->where($name, $value);
+        foreach ($filters as $key => $value) {
+            if (!$value) continue;
+        
+            [$field, $operator] = array_pad(explode(':', $key), 2, '=');
+        
+            if ($operator === 'like') {
+                $value = "%{$value}%";
             }
+        
+            $query->where($field, $operator, $value);
         }
 
         $records = $query->paginate($paginationAmount);

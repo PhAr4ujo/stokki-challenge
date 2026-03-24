@@ -4,6 +4,7 @@ namespace App\Services;
 
 use App\Repositories\Interfaces\IRepository;
 use App\Services\Interfaces\IService;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 abstract class Service implements IService
 {
@@ -29,7 +30,7 @@ abstract class Service implements IService
         return $this->repository->delete($id);
     }
 
-    public function listRecords(array $filters, int $paginationAmount = 15)
+    public function listRecords(array $filters, int $paginationAmount = 15): LengthAwarePaginator
     {
         return $this->repository->listRecords($filters, $paginationAmount);
     }

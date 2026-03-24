@@ -8,8 +8,7 @@ use App\Services\Service;
 
 class ProductService extends Service implements IProductService
 {
-    protected $repository;
-
+ 
     public function __construct(
         IProductRepository $repository,
     ) {
