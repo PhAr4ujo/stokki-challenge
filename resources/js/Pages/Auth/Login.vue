@@ -11,6 +11,9 @@ defineProps({
     canResetPassword: {
         type: Boolean,
     },
+    canRegister: {
+        type: Boolean,
+    },
     status: {
         type: String,
     },
@@ -72,9 +75,7 @@ const submit = () => {
             <div class="mt-4 block">
                 <label class="flex items-center">
                     <Checkbox name="remember" v-model:checked="form.remember" />
-                    <span class="ms-2 text-sm text-gray-600"
-                        >Remember me</span
-                    >
+                    <span class="ms-2 text-sm text-gray-600">Remember me</span>
                 </label>
             </div>
 
@@ -96,5 +97,15 @@ const submit = () => {
                 </PrimaryButton>
             </div>
         </form>
+
+        <div v-if="canRegister" class="mt-6 text-center text-sm text-gray-600">
+            Don't have an account?
+            <Link
+                :href="route('register')"
+                class="rounded-md font-medium text-indigo-600 underline hover:text-indigo-500 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            >
+                Register
+            </Link>
+        </div>
     </GuestLayout>
 </template>
