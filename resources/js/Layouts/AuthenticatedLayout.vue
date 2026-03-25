@@ -51,7 +51,7 @@ const flashSuccess = computed(() => page.props.flash?.success);
                                     :href="route('products.index')"
                                     :active="route().current('products.index')"
                                 >
-                                    Produtos
+                                    Pedidos
                                 </NavLink>
                             </div>
 
