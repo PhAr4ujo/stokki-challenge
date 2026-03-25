@@ -14,10 +14,14 @@ const props = defineProps({
 
 const form = useForm({
     name: props.carrier.name,
+    cnpj: props.carrier.cnpj,
+    street: props.carrier.street,  
     city: props.carrier.city,
+    state: props.carrier.state,  
     neighborhood: props.carrier.neighborhood,
     residence_number: String(props.carrier.residence_number),
     complement: props.carrier.complement,
+    cep: props.carrier.cep ?? '',
 });
 
 function submit() {
@@ -36,7 +40,10 @@ function submit() {
             class="space-y-8"
             @submit.prevent="submit"
         >
-            <CarrierFormFields :form="form" />
+            <CarrierFormFields
+                :form="form"
+                mode="edit"
+            />
 
             <div
                 class="flex flex-col gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"

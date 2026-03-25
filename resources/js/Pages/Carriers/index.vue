@@ -68,6 +68,22 @@ const clearFiltersUrl = computed(() =>
 );
 
 onUnmounted(() => clearTimeout(debounceTimer));
+
+function formatCnpj(value) {
+    const digits = String(value ?? '').replace(/\D+/g, '').slice(0, 14);
+    const p1 = digits.slice(0, 2);
+    const p2 = digits.slice(2, 5);
+    const p3 = digits.slice(5, 8);
+    const p4 = digits.slice(8, 12);
+    const p5 = digits.slice(12, 14);
+
+    let out = p1;
+    if (p2) out += `.${p2}`;
+    if (p3) out += `.${p3}`;
+    if (p4) out += `/${p4}`;
+    if (p5) out += `-${p5}`;
+    return out;
+}
 </script>
 
 <template>
@@ -174,6 +190,7 @@ onUnmounted(() => clearTimeout(debounceTimer));
                     >
                         <tr>
                             <th class="px-4 py-3">Nome</th>
+                            <th class="px-4 py-3">CNPJ</th>
                             <th class="px-4 py-3">Cidade</th>
                             <th class="px-4 py-3">Bairro</th>
                             <th class="px-4 py-3">Nº</th>
@@ -191,6 +208,9 @@ onUnmounted(() => clearTimeout(debounceTimer));
                                 class="whitespace-nowrap px-4 py-3 font-medium text-gray-900"
                             >
                                 {{ carrier.name }}
+                            </td>
+                            <td class="px-4 py-3 text-gray-700">
+                                {{ formatCnpj(carrier.cnpj) }}
                             </td>
                             <td class="px-4 py-3 text-gray-700">
                                 {{ carrier.city }}

@@ -14,6 +14,9 @@ return new class extends Migration
         Schema::create('carriers', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('cnpj');
+            $table->string('state');
+            $table->string('street');
             $table->string('city');
             $table->string('neighborhood');
             $table->integer('residence_number');

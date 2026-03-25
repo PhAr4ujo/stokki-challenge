@@ -7,7 +7,11 @@ import { useForm } from '@inertiajs/vue3';
 
 const form = useForm({
     name: '',
+    cnpj: '',
+    cep: '',
+    street: '',     
     city: '',
+    state: '',       
     neighborhood: '',
     residence_number: '',
     complement: '',
@@ -29,7 +33,10 @@ function submit() {
             class="space-y-8"
             @submit.prevent="submit"
         >
-            <CarrierFormFields :form="form" />
+            <CarrierFormFields
+                :form="form"
+                mode="create"
+            />
 
             <div
                 class="flex flex-col gap-3 border-t border-gray-100 pt-6 sm:flex-row sm:flex-wrap sm:items-center sm:gap-4"

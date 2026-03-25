@@ -18,6 +18,22 @@ function formatDateTime(value) {
         timeStyle: 'short',
     }).format(new Date(value));
 }
+
+function formatCnpj(value) {
+    const digits = String(value ?? '').replace(/\D+/g, '').slice(0, 14);
+    const p1 = digits.slice(0, 2);
+    const p2 = digits.slice(2, 5);
+    const p3 = digits.slice(5, 8);
+    const p4 = digits.slice(8, 12);
+    const p5 = digits.slice(12, 14);
+
+    let out = p1;
+    if (p2) out += `.${p2}`;
+    if (p3) out += `.${p3}`;
+    if (p4) out += `/${p4}`;
+    if (p5) out += `-${p5}`;
+    return out;
+}
 </script>
 
 <template>
@@ -52,18 +68,32 @@ function formatDateTime(value) {
 
         <dl class="divide-y divide-gray-100">
             <div class="grid gap-1 py-4 first:pt-0 sm:grid-cols-3 sm:gap-4">
+                <dt class="text-sm font-medium text-gray-500">CNPJ</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                    {{ formatCnpj(carrier.cnpj) }}
+                </dd>
+            </div>
+            <div class="grid gap-1 py-4 sm:grid-cols-3 sm:gap-4">
+                <dt class="text-sm font-medium text-gray-500">Rua</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                    {{ carrier.street }}
+                </dd>
+            </div>
+            <div class="grid gap-1 py-4 first:pt-0 sm:grid-cols-3 sm:gap-4">
                 <dt class="text-sm font-medium text-gray-500">Cidade</dt>
-                <dd
-                    class="text-sm text-gray-900 sm:col-span-2 sm:mt-0"
-                >
+                <dd class="text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                     {{ carrier.city }}
                 </dd>
             </div>
             <div class="grid gap-1 py-4 sm:grid-cols-3 sm:gap-4">
+                <dt class="text-sm font-medium text-gray-500">Estado</dt>
+                <dd class="text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                    {{ carrier.state }}
+                </dd>
+            </div>
+            <div class="grid gap-1 py-4 sm:grid-cols-3 sm:gap-4">
                 <dt class="text-sm font-medium text-gray-500">Bairro</dt>
-                <dd
-                    class="text-sm text-gray-900 sm:col-span-2 sm:mt-0"
-                >
+                <dd class="text-sm text-gray-900 sm:col-span-2 sm:mt-0">
                     {{ carrier.neighborhood }}
                 </dd>
             </div>
