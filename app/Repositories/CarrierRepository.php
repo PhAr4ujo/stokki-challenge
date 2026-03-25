@@ -13,17 +13,4 @@ class CarrierRepository extends Repository implements ICarrierRepository
     {
         return Carrier::class;
     }
-
-    public function listRecords(array $filters, $paginationAmount): LengthAwarePaginator
-    {
-        $query = $this->model->query()->orderBy('name');
-
-        $name = $filters['name'] ?? null;
-        if (filled($name)) {
-            $term = '%'.addcslashes($name, '%_\\').'%';
-            $query->where('name', 'like', $term);
-        }
-
-        return $query->paginate($paginationAmount);
-    }
 }
