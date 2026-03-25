@@ -49,7 +49,7 @@ const flashSuccess = computed(() => page.props.flash?.success);
                             >
                                 <NavLink
                                     :href="route('products.index')"
-                                    :active="route().current('products.index')"
+                                    :active="route().current('products.*')"
                                 >
                                     Pedidos
                                 </NavLink>
@@ -59,8 +59,8 @@ const flashSuccess = computed(() => page.props.flash?.success);
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
                                 <NavLink
-                                    :href="route('dashboard')"
-                                    :active="route().current('dashboard')"
+                                    :href="route('carriers.index')"
+                                    :active="route().current('carriers.*')"
                                 >
                                     Transportadoras
                                 </NavLink>
@@ -170,6 +170,18 @@ const flashSuccess = computed(() => page.props.flash?.success);
                             :active="route().current('dashboard')"
                         >
                             Dashboard
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('products.index')"
+                            :active="route().current('products.*')"
+                        >
+                            Pedidos
+                        </ResponsiveNavLink>
+                        <ResponsiveNavLink
+                            :href="route('carriers.index')"
+                            :active="route().current('carriers.*')"
+                        >
+                            Transportadoras
                         </ResponsiveNavLink>
                     </div>
 

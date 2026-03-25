@@ -5,6 +5,7 @@ namespace App\Repositories;
 use App\Models\Carrier;
 use App\Repositories\Interfaces\ICarrierRepository;
 use App\Repositories\Repository;
+use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class CarrierRepository extends Repository implements ICarrierRepository
 {
