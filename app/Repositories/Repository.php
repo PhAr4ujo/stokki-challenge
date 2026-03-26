@@ -62,6 +62,11 @@ abstract class Repository implements IRepository
         return $records;
     }
 
+    public function getAll()
+    {
+        return $this->model->get();
+    }
+
     public function find(int $id)
     {
         return $this->model->find($id);

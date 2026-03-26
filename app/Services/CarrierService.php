@@ -15,4 +15,8 @@ class CarrierService extends Service implements ICarrierService
         parent::__construct($repository);
     }
 
+    public function mountDashboardData(): array
+    {
+        return $this->repository->mountDashboardData();
+    }
 }

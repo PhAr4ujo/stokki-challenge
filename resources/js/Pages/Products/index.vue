@@ -85,6 +85,12 @@ function formatMoney(value) {
         currency: 'BRL',
     }).format(Number(value));
 }
+
+// Add export functionality
+function exportCsv() {
+    // We just navigate to the backend export route (GET), triggers browser download.
+    window.open(route('products.export'), '_blank');
+}
 </script>
 
 <template>
@@ -109,6 +115,33 @@ function formatMoney(value) {
                     </svg>
                 </template>
                 Novo produto
+            </ButtonLink>
+            <!-- Export Button (WORKS) -->
+            <ButtonLink
+                type="button"
+                variant="secondary"
+                class="ml-2"
+                @click="exportCsv"
+                :href="undefined"
+            >
+                <template #leading>
+                    <svg
+                        class="h-5 w-5"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke-width="2"
+                        stroke="currentColor"
+                        aria-hidden="true"
+                    >
+                        <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M7 16v1a2 2 0 002 2h6a2 2 0 002-2v-1M12 12v6m0 0l-3-3m3 3l3-3M5 12V7a2 2 0 012-2h10a2 2 0 012 2v5"
+                        />
+                    </svg>
+                </template>
+                Exportar dados
             </ButtonLink>
         </template>
 

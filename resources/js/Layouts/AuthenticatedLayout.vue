@@ -15,7 +15,7 @@ const flashSuccess = computed(() => page.props.flash?.success);
 
 <template>
     <div>
-        <div class="min-h-screen bg-gray-100">
+        <div class="min-h-screen bg-gray-100 overflow-x-hidden">
             <nav
                 class="border-b border-gray-100 bg-white"
             >
@@ -244,3 +244,10 @@ const flashSuccess = computed(() => page.props.flash?.success);
         </div>
     </div>
 </template>
+
+<style scoped>
+/* Prevent horizontal scrolling at all times */
+:global(html), :global(body), :global(#app), :global(.min-h-screen) {
+    overflow-x: hidden !important;
+}
+</style>

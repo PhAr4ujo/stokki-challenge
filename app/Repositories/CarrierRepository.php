@@ -13,4 +13,13 @@ class CarrierRepository extends Repository implements ICarrierRepository
     {
         return Carrier::class;
     }
+
+    public function mountDashboardData(): array
+    {
+        $amountOfCarriers = Carrier::count();
+        
+        return [
+            'amount_of_carriers' => $amountOfCarriers,
+        ];
+    }
 }

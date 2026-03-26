@@ -101,10 +101,11 @@ function onClick(e) {
                 stroke="currentColor"
                 aria-hidden="true"
             >
+                <!-- New trash/delete icon: solid bottom, visible handle, simple lines -->
                 <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
-                    d="M14.74 9l-.346 9m-4.008 0L9.502 9m9.122-3.25H3.378a1.125 1.125 0 00-1.12 1.007l-.77 7.5a1.125 1.125 0 001.12 1.007h13.19a1.125 1.125 0 001.12-1.007l-.77-7.5a1.125 1.125 0 00-1.12-1.007zM9.503 4.75V3.375c0-.621.504-1.125 1.125-1.125h2.872c.621 0 1.125.504 1.125 1.125V4.75"
+                    d="M6 7h12M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2m2 0v11a2 2 0 01-2 2H8a2 2 0 01-2-2V7m3 4v6m4-6v6"
                 />
             </svg>
         </slot>
@@ -153,6 +154,23 @@ function onClick(e) {
                     stroke-linecap="round"
                     stroke-linejoin="round"
                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
+                />
+            </svg>
+            <svg
+                v-else
+                class="h-4 w-4"
+                xmlns="http://www.w3.org/2000/svg"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke-width="1.5"
+                stroke="currentColor"
+                aria-hidden="true"
+            >
+                <!-- New trash/delete icon: solid bottom, visible handle, simple lines -->
+                <path
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    d="M6 7h12M9 7V5a2 2 0 012-2h2a2 2 0 012 2v2m2 0v11a2 2 0 01-2 2H8a2 2 0 01-2-2V7m3 4v6m4-6v6"
                 />
             </svg>
         </slot>

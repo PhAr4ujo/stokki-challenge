@@ -11,4 +11,6 @@ interface IService
     public function edit($id, $data);
     public function delete($id);
     public function find(int $id);
+
+    public function getAll();
 }

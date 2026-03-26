@@ -39,4 +39,9 @@ abstract class Service implements IService
     {
         return $this->repository->find($id);
     }
+
+    public function getAll()
+    {
+        return $this->repository->getAll();
+    }
 }

@@ -105,4 +105,10 @@ class ProductController extends Controller
             ->route('products.index')
             ->with('success', 'Produto excluído com sucesso.');
     }
+
+
+    public function export()
+    {
+        return $this->iProductService->exportData();
+    }
 }
