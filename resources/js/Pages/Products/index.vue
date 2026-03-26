@@ -116,7 +116,6 @@ function exportCsv() {
                 </template>
                 Novo produto
             </ButtonLink>
-            <!-- Export Button (WORKS) -->
             <ButtonLink
                 type="button"
                 variant="secondary"

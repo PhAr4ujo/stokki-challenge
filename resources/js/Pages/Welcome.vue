@@ -22,10 +22,8 @@ defineProps({
 <template>
     <Head title="Stokki | Desafio Pleno" />
     <div class="relative min-h-screen flex flex-col bg-white overflow-hidden">
-        <!-- Navbar -->
         <nav class="flex justify-between items-center px-8 py-4 z-20 relative shadow backdrop-blur bg-white/80 border-b border-gray-200">
             <div class="flex items-center space-x-3">
-                <!-- Stock Icon -->
                 <svg class="h-9 w-auto mr-1" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <rect x="7" y="28" width="8" height="13" rx="2" fill="#4ADE80"/>
                     <rect x="20" y="18" width="8" height="23" rx="2" fill="#60A5FA"/>
@@ -55,7 +53,6 @@ defineProps({
             </div>
         </nav>
 
-        <!-- Backdrop -->
         <div class="absolute inset-0 pointer-events-none select-none z-0">
             <svg class="w-full h-full object-cover" viewBox="0 0 1440 800" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
                 <polyline points="0,600 140,520 280,680 420,360 560,520 700,440 840,700 980,220 1120,480 1260,380 1440,570" stroke="#22d3ee" stroke-width="3" opacity=".05" fill="none"/>
@@ -63,7 +60,6 @@ defineProps({
             </svg>
         </div>
 
-        <!-- Conteúdo Principal -->
         <div class="relative z-10 flex-1 flex flex-col items-center justify-center px-4 pt-20 pb-24">
             <div class="max-w-xl w-full bg-white rounded-2xl shadow-md p-10 border border-gray-100">
                 <h1 class="text-4xl md:text-5xl font-extrabold text-gray-900 text-center mb-5 tracking-tight">
@@ -113,7 +109,6 @@ defineProps({
             </div>
         </div>
 
-        <!-- Rodapé -->
         <footer class="absolute bottom-0 left-0 right-0 py-3 px-10 text-xs text-gray-500 flex justify-between items-center z-20 bg-white/80 backdrop-blur-sm border-t border-gray-200">
             <div>
                 Laravel v{{ laravelVersion }} (PHP v{{ phpVersion }})

@@ -101,7 +101,6 @@ function onClick(e) {
                 stroke="currentColor"
                 aria-hidden="true"
             >
-                <!-- New trash/delete icon: solid bottom, visible handle, simple lines -->
                 <path
                     stroke-linecap="round"
                     stroke-linejoin="round"
@@ -166,7 +165,6 @@ function onClick(e) {
                 stroke="currentColor"
                 aria-hidden="true"
             >
-                <!-- New trash/delete icon: solid bottom, visible handle, simple lines -->
                 <path
                     stroke-linecap="round"
                     stroke-linejoin="round"

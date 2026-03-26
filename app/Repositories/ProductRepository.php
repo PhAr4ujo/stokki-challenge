@@ -15,74 +15,71 @@ class ProductRepository extends Repository implements IProductRepository
 
     public function mountDashboardData(): array
     {
-        return \Cache::remember('dashboard_data', now()->addMinutes(15), function () {
-
-            $result = \DB::table('products')
+        $agg = \Cache::remember('dash_agg', now()->addMinutes(15), function () {
+            return (array) \DB::table('products')
                 ->selectRaw('
                     COUNT(*) as order_count,
-                    SUM(amount * price) as total_sold,
-                    AVG(amount * price) as average_order_value,
-                    COUNT(DISTINCT customer_name) as unique_customers,
+                    SUM(total) as total_sold,
+                    AVG(total) as average_order_value,
                     SUM(amount) as total_quantity_sold
                 ')
-                ->first();
+                ->first(); 
+        });
+        
 
-            $orderCount = (int) ($result->order_count ?? 0);
-            $totalSold = (float) ($result->total_sold ?? 0);
-            $averageOrderValue = (float) ($result->average_order_value ?? 0);
-            $uniqueCustomers = (int) ($result->unique_customers ?? 0);
-            $totalQuantitySold = (int) ($result->total_quantity_sold ?? 0);
-            $averageItemPrice = $totalQuantitySold > 0 ? ($totalSold / $totalQuantitySold) : 0;
+        $uniqueCustomers = \Cache::remember('dash_unique_customers', now()->addMinutes(15), function () {
+            return (int) \DB::table('products')
+                ->distinct('customer_name')
+                ->count('customer_name');
+        });
 
-            $topProducts = \DB::table('products')
-                ->selectRaw('name, SUM(amount * price) as total_sold, SUM(amount) as quantity_sold')
+        $topProducts = \Cache::remember('dash_top_products', now()->addMinutes(15), function () {
+            return \DB::table('products')
+                ->selectRaw('name, SUM(total) as total_sold, SUM(amount) as quantity_sold')
                 ->groupBy('name')
                 ->orderByDesc('total_sold')
                 ->limit(5)
                 ->get()
                 ->toArray();
+        });
 
-            $mostPopularProduct = \DB::table('products')
-                ->selectRaw('name, SUM(amount) as total_quantity')
-                ->groupBy('name')
-                ->orderByDesc('total_quantity')
-                ->limit(1)
-                ->first();
+        $mostPopularProduct = collect($topProducts)->sortByDesc('quantity_sold')->first();
 
-            $topCustomers = \DB::table('products')
-                ->selectRaw('customer_name, SUM(amount * price) as total_spent, COUNT(*) as order_count')
+        $topCustomers = \Cache::remember('dash_top_customers', now()->addMinutes(15), function () {
+            return \DB::table('products')
+                ->selectRaw('customer_name, SUM(total) as total_spent, COUNT(*) as order_count')
                 ->groupBy('customer_name')
                 ->orderByDesc('total_spent')
                 ->limit(5)
                 ->get()
                 ->toArray();
+        });
 
+        $monthlySales = \Cache::remember('dash_monthly_sales', now()->addMinutes(15), function () {
             $sixMonthsAgo = now()->subMonths(6)->startOfMonth()->toDateString();
-            $monthlySales = \DB::table('products')
-                ->selectRaw("
-                    DATE_FORMAT(created_at, '%Y-%m') as month,
-                    SUM(amount * price) as total_sold,
-                    SUM(amount) as quantity_sold,
-                    COUNT(*) as orders
-                ")
+            return \DB::table('products')
+                ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total) as total_sold, SUM(amount) as quantity_sold, COUNT(*) as orders")
                 ->where('created_at', '>=', $sixMonthsAgo)
                 ->groupBy('month')
                 ->orderBy('month')
                 ->get()
                 ->toArray();
-
-            return [
-                'order_count'          => $orderCount,
-                'total_sold'           => $totalSold,
-                'average_order_value'  => $averageOrderValue,
-                'unique_customers'     => $uniqueCustomers,
-                'top_products'         => $topProducts,
-                'total_quantity_sold'  => $totalQuantitySold,
-                'average_item_price'   => $averageItemPrice,
-                'most_popular_product' => $mostPopularProduct,
-                'top_customers'        => $topCustomers,
-                'monthly_sales'        => $monthlySales,
-            ];
         });
+
+        $totalSold         = (float) ($agg['total_sold'] ?? 0);
+        $totalQuantitySold = (int)   ($agg['total_quantity_sold'] ?? 0);
+
+        return [
+            'order_count'          => (int)   ($agg['order_count'] ?? 0),
+            'total_sold'           => $totalSold,
+            'average_order_value'  => (float) ($agg['average_order_value'] ?? 0),
+            'unique_customers'     => $uniqueCustomers,
+            'top_products'         => $topProducts,
+            'total_quantity_sold'  => $totalQuantitySold,
+            'average_item_price'   => $totalQuantitySold > 0 ? ($totalSold / $totalQuantitySold) : 0,
+            'most_popular_product' => $mostPopularProduct,
+            'top_customers'        => $topCustomers,
+            'monthly_sales'        => $monthlySales,
+        ];
     }
 }

@@ -284,7 +284,6 @@ const miniCard = (icon, label, value, extra = null) => ({
         <div class="bg-gray-50 min-h-screen py-8">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 
-                <!-- KPIs principais em grade -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <Card v-for="(kpi, i) in kpiCards" :key="i" class="kpi-card border-none" :class="kpi.class">
                         <template #title>
@@ -305,7 +304,6 @@ const miniCard = (icon, label, value, extra = null) => ({
                     </Card>
                 </div>
 
-                <!-- Métricas Avançadas (Top 1 Produto) -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <Card
                         v-if="topProducts.length > 0"
@@ -345,7 +343,6 @@ const miniCard = (icon, label, value, extra = null) => ({
                     </Card>
                 </div>
 
-                <!-- Linha de Gráficos -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6 mb-8">
                     <div class="bg-white rounded shadow p-0 flex flex-col min-h-[340px]">
                         <h3 class="font-semibold mb-2 text-lg text-gray-700 p-6 pb-2">Top 5 Produtos Vendidos</h3>

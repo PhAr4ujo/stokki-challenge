@@ -19,11 +19,9 @@ const flashSuccess = computed(() => page.props.flash?.success);
             <nav
                 class="border-b border-gray-100 bg-white"
             >
-                <!-- Primary Navigation Menu -->
                 <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                     <div class="flex h-16 justify-between">
                         <div class="flex">
-                            <!-- Logo -->
                             <div class="flex shrink-0 items-center">
                                 <Link :href="route('dashboard')">
                                     <ApplicationLogo
@@ -32,7 +30,6 @@ const flashSuccess = computed(() => page.props.flash?.success);
                                 </Link>
                             </div>
 
-                            <!-- Navigation Links -->
                             <div
                                 class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex"
                             >
@@ -68,7 +65,6 @@ const flashSuccess = computed(() => page.props.flash?.success);
                         </div>
 
                         <div class="hidden sm:ms-6 sm:flex sm:items-center">
-                            <!-- Settings Dropdown -->
                             <div class="relative ms-3">
                                 <Dropdown align="right" width="48">
                                     <template #trigger>
@@ -113,7 +109,6 @@ const flashSuccess = computed(() => page.props.flash?.success);
                             </div>
                         </div>
 
-                        <!-- Hamburger -->
                         <div class="-me-2 flex items-center sm:hidden">
                             <button
                                 @click="
@@ -156,7 +151,6 @@ const flashSuccess = computed(() => page.props.flash?.success);
                     </div>
                 </div>
 
-                <!-- Responsive Navigation Menu -->
                 <div
                     :class="{
                         block: showingNavigationDropdown,
@@ -185,7 +179,6 @@ const flashSuccess = computed(() => page.props.flash?.success);
                         </ResponsiveNavLink>
                     </div>
 
-                    <!-- Responsive Settings Options -->
                     <div
                         class="border-t border-gray-200 pb-1 pt-4"
                     >
@@ -227,7 +220,6 @@ const flashSuccess = computed(() => page.props.flash?.success);
                 </div>
             </div>
 
-            <!-- Page Heading -->
             <header
                 class="bg-white shadow"
                 v-if="$slots.header"
@@ -237,7 +229,6 @@ const flashSuccess = computed(() => page.props.flash?.success);
                 </div>
             </header>
 
-            <!-- Page Content -->
             <main>
                 <slot />
             </main>
