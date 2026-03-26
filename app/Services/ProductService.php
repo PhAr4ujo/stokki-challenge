@@ -5,7 +5,7 @@ namespace App\Services;
 use App\Repositories\Interfaces\IProductRepository;
 use App\Services\Interfaces\IProductService;
 use App\Services\Service;
-use Illuminate\Support\Facades\Response; // for response() helper
+use Illuminate\Support\Facades\Response; 
 use Illuminate\Support\Facades\Storage;
 
 class ProductService extends Service implements IProductService
@@ -15,6 +15,24 @@ class ProductService extends Service implements IProductService
         IProductRepository $repository,
     ) {
         parent::__construct($repository);
+    }
+
+    public function insert($data)
+    {
+        \Cache::forget('dashboard_data');
+        return parent::insert($data);
+    }
+
+    public function edit($id, $data)
+    {
+        \Cache::forget('dashboard_data');
+        return parent::edit($id, $data);
+    }
+
+    public function delete($id)
+    {
+        \Cache::forget('dashboard_data');
+        return parent::delete($id);
     }
 
     public function mountDashboardData(): array

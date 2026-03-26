@@ -28,14 +28,13 @@ class CarrierFactory extends Factory
         $cnpj_digits = $this->faker->numerify(str_repeat('#', 14));
 
         return [
-            'name' => $this->faker->company . ' Transportes',
+            'name' => $this->faker->company() . ' Transportes ' . $this->faker->bothify('??##'),
             'state' => $this->faker->randomElement($states),
             'street' => $this->faker->streetName(),
             'cnpj' => $cnpj_digits,
             'city' => $this->faker->city(),
             'neighborhood' => $this->faker->streetSuffix(),
             'residence_number' => $this->faker->buildingNumber(),
-            // Guarantee 'complement' is a non-null string (can be empty)
             'complement' => $this->faker->secondaryAddress() ?? '',
         ];
     }

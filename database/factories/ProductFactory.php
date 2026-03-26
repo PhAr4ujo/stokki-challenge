@@ -24,7 +24,7 @@ class ProductFactory extends Factory
         $brand = $this->faker->randomElement($brands);
         $category = $this->faker->randomElement($categories);
 
-        $productName = "{$brand} " . ucfirst($category) . ' ' . $this->faker->unique()->bothify('Model-###?' . strtoupper($this->faker->randomLetter));
+        $productName = "{$brand} " . ucfirst($category) . ' ' . $this->faker->bothify('##??-####');
         $customerNames = ['Amazon', 'Kabum', 'Apple', 'Dell', 'Magazine Luiza', 'Mercado Livre', 'Fast Shop', 'Extra', 'Ponto', 'Carrefour'];
         $customerName = $this->faker->randomElement($customerNames);
 
@@ -49,10 +49,8 @@ class ProductFactory extends Factory
             true
         ) . " Features: " . $this->faker->words($this->faker->numberBetween(3, 6), true) . '.';
 
-        // Generate a created_at date spread among all months of the current year
         $currentYear = now()->year;
         $month = $this->faker->numberBetween(1, 12);
-        // Get days in month for safety
         $daysInMonth = Carbon::createFromDate($currentYear, $month, 1)->daysInMonth;
         $day = $this->faker->numberBetween(1, $daysInMonth);
 

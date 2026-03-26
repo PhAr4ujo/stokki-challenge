@@ -17,10 +17,16 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $chunkSize = 10000;
+        $totalCount = 1000000;
 
-        Product::factory(100000)->create();
-        Carrier::factory(100000)->create();
+        for ($i = 0; $i < $totalCount; $i += $chunkSize) {
+            Product::factory($chunkSize)->create();
+        }
+
+        for ($i = 0; $i < $totalCount; $i += $chunkSize) {
+            Carrier::factory($chunkSize)->create();
+        }
 
     }
 }
