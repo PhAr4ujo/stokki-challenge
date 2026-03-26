@@ -96,7 +96,3 @@ A inserção em massa utiliza **chunk insert** (inserção em blocos via `DB::in
 ### Cache no Dashboard
 
 As queries de dashboard agregam dados sobre 2M+ de registros. Para evitar lentidão a cada acesso, o resultado é **cacheado por 15 minutos** e invalidado automaticamente sempre que um produto é criado, editado ou removido.
-
-### Índices no banco
-
-As colunas mais consultadas nas queries de agregação (`name`, `customer_name`, `created_at`) possuem índices dedicados, reduzindo o tempo de `GROUP BY` e `WHERE` em tabelas grandes.
