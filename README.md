@@ -100,3 +100,44 @@ As queries de dashboard agregam dados sobre 2M+ de registros. Para evitar lentid
 ### Índices no banco
  
 As colunas mais consultadas nas queries de agregação (`name`, `customer_name`, `created_at`) possuem índices dedicados, reduzindo o tempo de `GROUP BY` e `WHERE` em tabelas grandes.
+
+### B-Tree / Binary Search e O(log n)
+
+Os índices do MySQL são implementados internamente como **B-Trees (Balanced Trees)**.
+Cada inserção ou deleção de registro mantém a árvore automaticamente balanceada via
+**node split**: quando um nó atinge sua capacidade máxima, a chave do meio é promovida
+ao nó pai e o nó é dividido em dois filhos — garantindo que todos os nós folha
+permaneçam sempre na mesma profundidade.
+
+Essa propriedade assegura complexidade **O(log n)** para qualquer busca:
+```
+Tabela com 2.000.000 de registros:
+
+Full Table Scan  →  2.000.000 comparações  →  O(n)
+B-Tree lookup    →  log₂(2.000.000) ≈ 21 comparações  →  O(log n)
+```
+
+#### Covering Index — eliminando o acesso à tabela
+
+Os índices compostos criados neste projeto são **covering indexes**: todas as colunas
+necessárias para responder às queries de agregação (`name`, `total`, `amount`,
+`customer_name`, `created_at`) estão presentes dentro do próprio índice.
+```sql
+SELECT name, SUM(total), SUM(amount)
+FROM products
+GROUP BY name
+ORDER BY SUM(total) DESC
+LIMIT 5;
+```
+
+O MySQL percorre as entradas do índice sequencialmente — já ordenadas por `name` —
+somando `total` e `amount` à medida que avança, **sem nenhum acesso à tabela principal**.
+Isso elimina milhões de I/Os aleatórios em disco, que são mais lentos que
+leitura sequencial.
+
+#### Campo `total` pré-calculado
+
+O model dispara `price * amount` no evento `saving()` e persiste o resultado em `total`.
+As queries de agregação usam `SUM(total)` em vez de `SUM(price * amount)`, eliminando
+2.000.000 multiplicações em runtime por query.
+
