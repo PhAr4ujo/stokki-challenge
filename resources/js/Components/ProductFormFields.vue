@@ -38,6 +38,7 @@ defineProps({
                 rows="3"
                 required
                 class="block w-full rounded-md border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500"
+                placeholder="Digite a descrição do produto"
             />
         </FormField>
 
@@ -53,6 +54,7 @@ defineProps({
                 class="block w-full"
                 required
                 autocomplete="off"
+                placeholder="Nome do cliente"
             />
         </FormField>
 
@@ -70,6 +72,7 @@ defineProps({
                     min="0"
                     step="0.01"
                     required
+                    placeholder="Informe o preço"
                 />
             </FormField>
 
@@ -86,6 +89,7 @@ defineProps({
                     min="1"
                     step="1"
                     required
+                    placeholder="Informe a quantidade"
                 />
             </FormField>
         </div>

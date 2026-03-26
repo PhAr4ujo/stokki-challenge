@@ -52,45 +52,45 @@ const kpiCards = [
     {
         icon: 
             `<svg width="28" height="28" fill="none" stroke="#3858ea" stroke-width="2"><rect x="4" y="4" width="20" height="16" rx="3" /><path d="M10 10h8"/><path d="M10 14h5"/></svg>`,
-        title: "Orders",
+        title: "Pedidos",
         value: orderCount,
-        note: "Total Orders",
+        note: "Total de pedidos",
         class: "p-6",
         color: "kpi-blue"
     },
     {
         icon: 
             `<svg width="28" height="28" fill="none" stroke="#28a745" stroke-width="2"><rect x="5" y="5" width="18" height="18" rx="5" /><path d="M8 15l4 4 8-8" stroke-linecap="round" stroke-linejoin="round" /></svg>`,
-        title: "Sold (R$)",
+        title: "Vendas (R$)",
         value: computed(() => `R$ ${totalSold.value.toFixed(2)}`),
-        note: "Total Sold",
+        note: "Total vendido",
         class: "p-6",
         color: "kpi-green"
     },
     {
         icon:
             `<svg width="28" height="28" fill="none" stroke="#3858ea" stroke-width="2"><rect x="8" y="8" width="12" height="12" rx="4"/><path d="M14 11v6"/></svg>`,
-        title: "Carriers",
+        title: "Transportadoras",
         value: amountOfCarriers,
-        note: "Active Carriers",
+        note: "Transportadoras ativas",
         class: "p-6",
         color: "kpi-indigo"
     },
     {
         icon: 
             `<svg width="28" height="28" fill="none" stroke="#17a2b8" stroke-width="2"><rect x="4" y="8" width="20" height="8" rx="4"/><path d="M8 12h12"/></svg>`,
-        title: "Average Order",
+        title: "Média por Pedido",
         value: computed(() => `R$ ${averageOrderValue.value.toFixed(2)}`),
-        note: "Avg. value/order",
+        note: "Valor médio/pedido",
         class: "p-6 !bg-infoLight",
         color: "text-info"
     },
     {
         icon: 
             `<svg width="28" height="28" fill="none" stroke="#212529" stroke-width="2"><circle cx="14" cy="14" r="10"/><path d="M10 16l4-6 4 6"/></svg>`,
-        title: "Avg. Item Price",
+        title: "Média por Item",
         value: computed(() => `R$ ${averageItemPrice.value.toFixed(2)}`),
-        note: "Avg. price/item",
+        note: "Preço médio/item",
         class: "p-6 !bg-gray-100",
         color: "text-gray-900"
     }
@@ -133,7 +133,7 @@ const salesLeaderboardBarData = ref({
     labels: topCustomers.value.map(c => c.customer_name),
     datasets: [
         {
-            label: 'Top 5 Customers (R$)',
+            label: 'Top 5 Clientes (R$)',
             data: topCustomers.value.map(c => Number(c.total_spent)),
             backgroundColor: [
                 dashboardColors.blue, dashboardColors.purple, dashboardColors.info, dashboardColors.accent, dashboardColors.orange
@@ -150,10 +150,10 @@ watch(topCustomers, (customers) => {
 });
 
 const ordersCarriersBarData = ref({
-    labels: ['Orders', 'Carriers'],
+    labels: ['Pedidos', 'Transportadoras'],
     datasets: [
         {
-            label: 'Totals',
+            label: 'Totais',
             backgroundColor: [dashboardColors.blue, dashboardColors.info],
             borderRadius: 8,
             categoryPercentage: 0.5,
@@ -171,7 +171,7 @@ const areaChartData = ref({
     labels: monthlySales.value.map(m => m.month),
     datasets: [
         {
-            label: 'Total Sold',
+            label: 'Total Vendido',
             data: monthlySales.value.map(m => Number(m.total_sold)),
             fill: true,
             borderColor: dashboardColors.accent,
@@ -277,14 +277,14 @@ const miniCard = (icon, label, value, extra = null) => ({
                     <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2" fill="none"/>
                     <path stroke-linecap="round" stroke-linejoin="round" d="M8 15l3-3 5 5" />
                 </svg>
-                <h2 class="text-2xl font-semibold leading-tight text-gray-800 tracking-tight">Business Dashboard</h2>
+                <h2 class="text-2xl font-semibold leading-tight text-gray-800 tracking-tight">Painel de Negócios</h2>
             </div>
         </template>
 
         <div class="bg-gray-50 min-h-screen py-8">
             <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
 
-                <!-- Main KPIs in a grid -->
+                <!-- KPIs principais em grade -->
                 <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                     <Card v-for="(kpi, i) in kpiCards" :key="i" class="kpi-card border-none" :class="kpi.class">
                         <template #title>
@@ -305,7 +305,7 @@ const miniCard = (icon, label, value, extra = null) => ({
                     </Card>
                 </div>
 
-                <!-- Advanced Metrics Grid (Top 1 Product) -->
+                <!-- Métricas Avançadas (Top 1 Produto) -->
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <Card
                         v-if="topProducts.length > 0"
@@ -318,7 +318,7 @@ const miniCard = (icon, label, value, extra = null) => ({
                                     <circle cx="14" cy="14" r="11" stroke="#28a745" stroke-width="2" fill="none" />
                                     <path d="M10 16l4-6 4 6" stroke="#28a745" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
                                 </svg>
-                                #1 PRODUCT
+                                Produto #1
                             </div>
                         </template>
                         <template #content>
@@ -326,7 +326,7 @@ const miniCard = (icon, label, value, extra = null) => ({
                                 {{ topProducts[0].name }}
                             </div>
                             <div class="text-sm text-green-800 p-3">
-                                Sold: R$ {{ Number(topProducts[0].total_sold).toFixed(2) }} / Qty: {{ Number(topProducts[0].quantity_sold) }}
+                                Vendido: R$ {{ Number(topProducts[0].total_sold).toFixed(2) }} / Qtd: {{ Number(topProducts[0].quantity_sold) }}
                             </div>
                         </template>
                     </Card>
@@ -335,20 +335,20 @@ const miniCard = (icon, label, value, extra = null) => ({
                         class="kpi-card border-none !bg-green-100"
                     >
                         <template #content>
-                            <div class="font-bold text-lg text-green-700">
+                            <div class="font-bold text-lg text-green-700 p-3">
                                 -
                             </div>
-                            <div class="text-sm text-green-800">
-                                Sold: R$ 0.00 / Qty: 0
+                            <div class="text-sm text-green-800 p-3">
+                                Vendido: R$ 0.00 / Qtd: 0
                             </div>
                         </template>
                     </Card>
                 </div>
 
-                <!-- Charts Row -->
+                <!-- Linha de Gráficos -->
                 <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-2 gap-6 mb-8">
                     <div class="bg-white rounded shadow p-0 flex flex-col min-h-[340px]">
-                        <h3 class="font-semibold mb-2 text-lg text-gray-700 p-6 pb-2">Top 5 Product Sales (Pie)</h3>
+                        <h3 class="font-semibold mb-2 text-lg text-gray-700 p-6 pb-2">Top 5 Produtos Vendidos</h3>
                         <div class="flex-1 flex justify-center items-center p-4">
                             <div class="flex items-center justify-center w-full h-full" style="min-height:220px;">
                                 <Chart 
@@ -361,7 +361,7 @@ const miniCard = (icon, label, value, extra = null) => ({
                         </div>
                     </div>
                     <div class="bg-white rounded shadow p-0 flex flex-col min-h-[340px] h-full" style="height:100%;">
-                        <h3 class="font-semibold mb-2 text-lg text-gray-700 p-6 pb-2">Orders vs. Carriers (Bar)</h3>
+                        <h3 class="font-semibold mb-2 text-lg text-gray-700 p-6 pb-2">Pedidos vs. Transportadoras</h3>
                         <div class="flex-1 flex items-center justify-center p-4" style="height:100%;">
                             <Chart 
                                 type="bar" 
@@ -375,7 +375,7 @@ const miniCard = (icon, label, value, extra = null) => ({
 
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
                     <div class="bg-white rounded shadow p-6">
-                        <h3 class="font-semibold mb-2 text-lg text-gray-700">Top 5 Customers (Bar)</h3>
+                        <h3 class="font-semibold mb-2 text-lg text-gray-700">Top 5 Clientes</h3>
                         <Chart type="bar" :data="salesLeaderboardBarData" :options="leaderboardBarChartOptions" style="max-width:420px" />
                         <div v-if="topCustomers.length" class="mt-3">
                             <ul>
@@ -385,10 +385,10 @@ const miniCard = (icon, label, value, extra = null) => ({
                                 </li>
                             </ul>
                         </div>
-                        <div v-else class="text-gray-400 mt-2">No customer leaderboard data yet.</div>
+                        <div v-else class="text-gray-400 mt-2">Ainda não há dados de clientes no ranking.</div>
                     </div>
                     <div class="bg-white rounded shadow p-6 flex flex-col min-h-[300px] h-full justify-center">
-                        <h3 class="font-semibold mb-2 text-lg text-gray-700">Monthly Sales (Area)</h3>
+                        <h3 class="font-semibold mb-2 text-lg text-gray-700">Vendas Mensais</h3>
                         <div class="flex-1 flex flex-col justify-center items-center w-full h-full min-h-[240px]">
                             <Chart
                                 v-if="monthlySales.length"
@@ -397,7 +397,7 @@ const miniCard = (icon, label, value, extra = null) => ({
                                 :options="areaChartOptions"
                                 style="width:100%;min-height:200px"
                             />
-                            <div v-else class="text-gray-400 mt-5">No sales data for recent months.</div>
+                            <div v-else class="text-gray-400 mt-5">Sem dados de vendas nos últimos meses.</div>
                         </div>
                     </div>
                 </div>
