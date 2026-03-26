@@ -123,7 +123,6 @@ Os índices compostos criados neste projeto são **covering indexes**: todas as 
 necessárias para responder às queries de agregação (`name`, `total`, `amount`,
 `customer_name`, `created_at`) estão presentes dentro do próprio índice.
 ```sql
--- Essa query é resolvida inteiramente no índice (Extra: Using index no EXPLAIN)
 SELECT name, SUM(total), SUM(amount)
 FROM products
 GROUP BY name
