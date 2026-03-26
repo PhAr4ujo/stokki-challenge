@@ -1,58 +1,102 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# 🚀 Stokki — Desafio Pleno
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+Aplicação fullstack desenvolvida como parte do desafio técnico para a vaga de Desenvolvedor Pleno.
 
-## About Laravel
+## 🛠️ Stack
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+| Camada | Tecnologia |
+|---|---|
+| Backend | Laravel + Laravel Sail (Docker) |
+| Frontend | Vue.js + Inertia.js + PrimeVue |
+| Banco de Dados | MySQL |
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+---
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## ⚙️ Como rodar o projeto
 
-## Learning Laravel
+### Pré-requisitos
+- Docker e Docker Compose instalados
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
-
-In addition, [Laracasts](https://laracasts.com) contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
-
-You can also watch bite-sized lessons with real-world projects on [Laravel Learn](https://laravel.com/learn), where you will be guided through building a Laravel application from scratch while learning PHP fundamentals.
-
-## Agentic Development
-
-Laravel's predictable structure and conventions make it ideal for AI coding agents like Claude Code, Cursor, and GitHub Copilot. Install [Laravel Boost](https://laravel.com/docs/ai) to supercharge your AI workflow:
+### 1. Clone o repositório
 
 ```bash
-composer require laravel/boost --dev
-
-php artisan boost:install
+git clone <url-do-repositorio>
+cd stokki
 ```
 
-Boost provides your agent 15+ tools and skills that help agents build Laravel applications while following best practices.
+### 2. Suba os containers
 
-## Contributing
+```bash
+./vendor/bin/sail up -d
+```
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+### 3. Rode as migrations
 
-## Code of Conduct
+```bash
+./vendor/bin/sail php artisan migrate
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+### 4. Popule o banco com 2 milhões de registros
 
-## Security Vulnerabilities
+```bash
+./vendor/bin/sail php artisan db:seed
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+### 5. Compile os assets
 
-## License
+```bash
+# Desenvolvimento (hot reload)
+./vendor/bin/sail npm run dev
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+# Produção
+./vendor/bin/sail npm run build
+```
+
+### 6. Acesse a aplicação
+
+```
+http://localhost
+```
+
+---
+
+## 🏗️ Arquitetura
+
+O projeto segue os princípios de **Clean Architecture**, com separação clara de responsabilidades entre as camadas:
+
+```
+app/
+├── Repositories/       # Interação com dados via Eloquent
+│   └── Interfaces/     # Contratos de repositório
+├── Services/           # Regras de negócio
+│   └── Interfaces/     # Contratos de serviço
+└── Http/
+    └── Controllers/    # Entrada HTTP (thin controllers)
+```
+
+### Padrões utilizados
+
+- **Repository Pattern** — abstrai o acesso ao banco de dados, desacoplando a lógica de negócio do ORM
+- **Service Layer** — centraliza as regras de negócio, mantendo controllers e repositories enxutos
+- **Dependency Injection + Inversão de Dependência** — as classes dependem de interfaces, não de implementações concretas, facilitando testes e troca de implementações
+
+---
+
+## ⚡ Decisões de Performance
+
+### Seeding de 2 milhões de registros
+
+A inserção em massa utiliza **chunk insert** (inserção em blocos via `DB::insert`), ao invés de `Model::create()` individual.
+
+| Abordagem | INSERTs no banco | Eventos Eloquent | Tempo estimado |
+|---|---|---|---|
+| `factory()->create()` individual | 2.000.000 | ✅ todos disparados | horas |
+| Chunk insert (`DB::insert` em blocos) | ~400 | ❌ bypassa (intencional) | minutos |
+
+### Cache no Dashboard
+
+As queries de dashboard agregam dados sobre 2M+ de registros. Para evitar lentidão a cada acesso, o resultado é **cacheado por 15 minutos** e invalidado automaticamente sempre que um produto é criado, editado ou removido.
+
+### Índices no banco
+
+As colunas mais consultadas nas queries de agregação (`name`, `customer_name`, `created_at`) possuem índices dedicados, reduzindo o tempo de `GROUP BY` e `WHERE` em tabelas grandes.
