@@ -19,19 +19,31 @@ class ProductService extends Service implements IProductService
 
     public function insert($data)
     {
-        \Cache::forget('dashboard_data');
+        \Cache::forget('dash_agg');
+        \Cache::forget('dash_unique_customers');
+        \Cache::forget('dash_top_products');
+        \Cache::forget('dash_top_customers');
+        \Cache::forget('dash_monthly_sales');
         return parent::insert($data);
     }
 
     public function edit($id, $data)
     {
-        \Cache::forget('dashboard_data');
+        \Cache::forget('dash_agg');
+        \Cache::forget('dash_unique_customers');
+        \Cache::forget('dash_top_products');
+        \Cache::forget('dash_top_customers');
+        \Cache::forget('dash_monthly_sales');
         return parent::edit($id, $data);
     }
 
     public function delete($id)
     {
-        \Cache::forget('dashboard_data');
+        \Cache::forget('dash_agg');
+        \Cache::forget('dash_unique_customers');
+        \Cache::forget('dash_top_products');
+        \Cache::forget('dash_top_customers');
+        \Cache::forget('dash_monthly_sales');
         return parent::delete($id);
     }
 

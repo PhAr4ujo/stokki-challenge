@@ -40,10 +40,24 @@ class ProductRepository extends Repository implements IProductRepository
                 ->orderByDesc('total_sold')
                 ->limit(5)
                 ->get()
+                ->map(fn ($item) => (array) $item)
                 ->toArray();
         });
 
-        $mostPopularProduct = collect($topProducts)->sortByDesc('quantity_sold')->first();
+        $mostPopularProduct = collect($topProducts)
+            ->map(function ($item) {
+                if ($item instanceof \__PHP_Incomplete_Class) {
+                    return (array) $item;
+                }
+
+                if (is_object($item)) {
+                    return (array) $item;
+                }
+
+                return $item;
+            })
+            ->sortByDesc(fn ($p) => $p['quantity_sold'] ?? 0)
+            ->first();
 
         $topCustomers = \Cache::remember('dash_top_customers', now()->addMinutes(15), function () {
             return \DB::table('products')
@@ -52,17 +66,20 @@ class ProductRepository extends Repository implements IProductRepository
                 ->orderByDesc('total_spent')
                 ->limit(5)
                 ->get()
+                ->map(fn ($item) => (array) $item)
                 ->toArray();
         });
 
         $monthlySales = \Cache::remember('dash_monthly_sales', now()->addMinutes(15), function () {
             $sixMonthsAgo = now()->subMonths(6)->startOfMonth()->toDateString();
+        
             return \DB::table('products')
                 ->selectRaw("DATE_FORMAT(created_at, '%Y-%m') as month, SUM(total) as total_sold, SUM(amount) as quantity_sold, COUNT(*) as orders")
                 ->where('created_at', '>=', $sixMonthsAgo)
                 ->groupBy('month')
                 ->orderBy('month')
                 ->get()
+                ->map(fn ($item) => (array) $item)
                 ->toArray();
         });
 
